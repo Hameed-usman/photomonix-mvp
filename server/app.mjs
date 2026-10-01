@@ -67,7 +67,8 @@ app.post('/api/analyze', upload.single('image'), async (request, response) => {
     })
 
     response.json({ analysis: { ...analysis, mode: useLiveAI ? 'live' : 'demo' }, mode: useLiveAI ? 'live' : 'demo' })
-  } catch {
+  } catch (error) {
+    console.error('[photomonix] AI analysis failed:', error instanceof Error ? error.message : String(error))
     response.status(502).json({ error: 'We could not analyze this image right now. Please try again.' })
   }
 })
