@@ -12,7 +12,7 @@ User → React/Vite → Node.js/Express → AI Analyzer → Suggestion Engine
 - The browser only talks to the Express `/api/*` routes; AI provider calls and credentials stay server-side.
 - `server/ai.mjs` isolates `analyzeProductImage`, `generateSuggestions`, and `generateProductImage` behind the AI SDK and Vercel AI Gateway.
 - `server/storage.mjs` provides ephemeral demo storage and an optional private Google Cloud Storage adapter. No database is needed for this stateless MVP.
-- In demo mode, analysis and directions are explicitly labeled as sample content. The result is a browser-composed studio preview using the original photo—not an AI-generated image. A Vercel deployment uses live AI mode; if a live model call fails, the API reports an error instead of silently substituting a fake result.
+- In demo mode, analysis and directions are explicitly labeled as sample content. The result is a browser-composed studio preview using the original photo—not an AI-generated image. Deployments default to the clearly labeled demo mode and never make billable model calls unless `AI_MODE=live` is explicitly set. If a live model call fails, the API reports an error instead of silently substituting a fake result.
 
 ## Run locally
 
@@ -27,7 +27,7 @@ Open the Vite URL printed in the preview. Local mode defaults to the clearly lab
 
 | Variable | Purpose |
 | --- | --- |
-| `AI_MODE` | Optional. Set to `live` when AI Gateway is available; otherwise use the labeled demo. Vercel deployments default to live mode. |
+| `AI_MODE` | Optional. Set to `live` to opt into AI Gateway analysis and generation; deployments default to the labeled demo mode. |
 | `GCS_BUCKET_NAME` | Optional. Enables private Google Cloud Storage for original and generated image objects. |
 | `GOOGLE_CLOUD_PROJECT` | Optional project ID for the Google Cloud Storage client. Use server-side Application Default Credentials / workload identity. |
 | `PORT` | Optional Express listen port; defaults to `3001`. |
@@ -36,7 +36,7 @@ No PostgreSQL database, login, or client-side AI key is required. Uploads are ca
 
 ## Deploy and share
 
-Push the project to a GitHub repository, then import that repository in Vercel (or connect GitHub under the v0 project settings and publish). Vercel uses `vercel.json`, runs `pnpm build`, serves the Vite `dist` output, sends `/api/*` requests to the Express adapter in `api/[...path].js`, and rewrites other paths to the SPA entry point. Once deployment completes, copy the production URL from Vercel to share with reviewers. The Vercel AI Gateway integration must be connected to the Vercel project for live analysis and generation. Add `GCS_BUCKET_NAME` only if private Google Cloud Storage is configured.
+Push the project to a GitHub repository, then import that repository in Vercel (or connect GitHub under the v0 project settings and publish). Vercel uses `vercel.json`, runs `pnpm build`, serves the Vite `dist` output, sends `/api/*` requests to the Express adapter in `api/[...path].js`, and rewrites other paths to the SPA entry point. Once deployment completes, copy the production URL from Vercel to share with reviewers. To enable live analysis and generation, connect Vercel AI Gateway, enable billing for the team, and set `AI_MODE=live` in the Vercel project environment variables before redeploying. Without that opt-in, the public app stays in its labeled demo mode. Add `GCS_BUCKET_NAME` only if private Google Cloud Storage is configured.
 
 ## Checks
 

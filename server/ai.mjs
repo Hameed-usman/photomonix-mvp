@@ -1,7 +1,7 @@
 import { generateText, gateway, Output } from 'ai'
 import { z } from 'zod'
 
-const liveAIEnabled = process.env.AI_MODE === 'live' || process.env.VERCEL === '1'
+const liveAIEnabled = process.env.AI_MODE === 'live'
 
 const analysisSchema = z.object({
   productName: z.string().min(1).max(80),

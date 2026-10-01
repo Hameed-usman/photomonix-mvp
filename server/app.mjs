@@ -14,7 +14,7 @@ import { storageMode, storeObject } from './storage.mjs'
 const app = express()
 const maxUploadSize = 4 * 1024 * 1024
 const allowedTypes = new Set(['image/jpeg', 'image/png', 'image/webp'])
-const useLiveAI = process.env.AI_MODE === 'live' || process.env.VERCEL === '1'
+const useLiveAI = process.env.AI_MODE === 'live'
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: maxUploadSize, files: 1 },
