@@ -36,7 +36,7 @@ No PostgreSQL database, login, or client-side AI key is required. Uploads are ca
 
 ## Deploy and share
 
-Push the project to a GitHub repository, then import that repository in Vercel (or connect GitHub under the v0 project settings and publish). Vercel uses `vercel.json`, runs `pnpm build`, serves the Vite `dist` output, and routes `/api/*` to the Express adapter in `api/index.js`. Once deployment completes, copy the production URL from Vercel to share with reviewers. The Vercel AI Gateway integration must be connected to the Vercel project for live analysis and generation. Add `GCS_BUCKET_NAME` only if private Google Cloud Storage is configured.
+Push the project to a GitHub repository, then import that repository in Vercel (or connect GitHub under the v0 project settings and publish). Vercel uses `vercel.json`, runs `pnpm build`, serves the Vite `dist` output, sends `/api/*` requests to the Express adapter in `api/[...path].js`, and rewrites other paths to the SPA entry point. Once deployment completes, copy the production URL from Vercel to share with reviewers. The Vercel AI Gateway integration must be connected to the Vercel project for live analysis and generation. Add `GCS_BUCKET_NAME` only if private Google Cloud Storage is configured.
 
 ## Checks
 
